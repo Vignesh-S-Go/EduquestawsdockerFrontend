@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // --- REFACTORED API HANDLING ---
-const API_BASE_URL = 'http://ec2-65-2-38-151.ap-south-1.compute.amazonaws.com:8081/api';
+const API_BASE_URL = 'http://ec2-65-1-135-207.ap-south-1.compute.amazonaws.com:8081/api';
 
 const getAuthToken = () => {
   return localStorage.getItem('token') || sessionStorage.getItem('token');
