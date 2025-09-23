@@ -33,7 +33,7 @@ const Login: React.FC = () => {
     navigator.geolocation.getCurrentPosition(
       async () => {
         try {
-          const response = await axios.post('http://ec2-65-1-135-207.ap-south-1.compute.amazonaws.com:8081/api/users/login', {
+          const response = await axios.post('http://ec2-13-201-34-207.ap-south-1.compute.amazonaws.com:8081/api/users/login', {
             ...formData,
             captchaToken,
           });
