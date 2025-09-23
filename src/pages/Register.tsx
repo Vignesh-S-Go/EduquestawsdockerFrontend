@@ -114,6 +114,12 @@ const Register: React.FC = () => {
             </div>
             
             {/* The ReCAPTCHA component has been removed from here */}
+            <div>
+              <ReCAPTCHA
+                sitekey="6LfR1NIrAAAAAJozt7vptXOm34ZSI8rcYSyFRVYY" 
+                onChange={handleCaptchaChange}
+              />
+            </div>
 
             <div>
               <button
