@@ -29,35 +29,24 @@ const Login: React.FC = () => {
       return;
     }
 
-    // location
-    navigator.geolocation.getCurrentPosition(
-      async () => {
-        try {
-          const response = await axios.post('http://ec2-13-201-34-207.ap-south-1.compute.amazonaws.com:8081/api/users/login', {
-            ...formData,
-            captchaToken,
-          });
+    // The location wrapper has been removed. The API call is now made directly.
+    try {
+      const response = await axios.post('http://ec2-13-201-34-207.ap-south-1.compute.amazonaws.com:8081/api/users/login', {
+        ...formData,
+        captchaToken,
+      });
 
-          if (response.data.token) {
-            storeToken(response.data.token); // Store the token
-            setMessage('Login Successful');
-            navigate('/dash');
-          } else {
-            setMessage('Email or password is incorrect');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          setMessage('Email or password is incorrect');
-        }
-      },
-      (error) => {
-        if (error.code === error.PERMISSION_DENIED) {
-          alert("Turn on your location or off");
-        } else {
-          console.error("Error accessing location:", error.message);
-        }
+      if (response.data.token) {
+        storeToken(response.data.token); // Store the token
+        setMessage('Login Successful');
+        navigate('/dash');
+      } else {
+        setMessage('Email or password is incorrect');
       }
-    );
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('Email or password is incorrect');
+    }
   };
 
   return (
@@ -137,4 +126,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-
