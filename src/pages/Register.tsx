@@ -34,7 +34,7 @@ const Register: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('http://ec2-65-2-38-151.ap-south-1.compute.amazonaws.com:8081/api/users/register', {
+      const response = await axios.post('http://ec2-65-1-135-207.ap-south-1.compute.amazonaws.com:8081/api/users/register', {
         ...formData,
         captchaToken, // optional: send this to backend for verification
       });
