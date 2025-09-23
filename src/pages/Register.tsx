@@ -121,7 +121,7 @@ const Register: React.FC = () => {
 
             <div>
               <ReCAPTCHA
-                sitekey="6Lcu0tIrAAAAAB7w9zbnjygt8Q1ShOfh2b0vzU79" // <-- Replace with your actual site key
+                sitekey="6LfR1NIrAAAAAJozt7vptXOm34ZSI8rcYSyFRVYY" // <-- Replace with your actual site key
                 onChange={handleCaptchaChange}
               />
             </div>
