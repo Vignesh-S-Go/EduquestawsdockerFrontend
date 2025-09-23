@@ -110,7 +110,7 @@ const Login: React.FC = () => {
 
             <div>
               <ReCAPTCHA
-                sitekey="6Lcu0tIrAAAAAB7w9zbnjygt8Q1ShOfh2b0vzU79" 
+                sitekey="6LfR1NIrAAAAAJozt7vptXOm34ZSI8rcYSyFRVYY" 
                 onChange={handleCaptchaChange}
               />
             </div>
