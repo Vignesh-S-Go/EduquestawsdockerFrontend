@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { UserPlus } from 'lucide-react';
 import React, { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Link } from 'react-router-dom';
 
 const Register: React.FC = () => {
@@ -12,21 +11,10 @@ const Register: React.FC = () => {
     confirmPassword: '',
   });
 
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [message, setMessage] = useState('');
-
-  const handleCaptchaChange = (token: string | null) => {
-    console.log("Captcha token:", token);
-    setCaptchaToken(token);
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!captchaToken) {
-      setMessage("Please complete the CAPTCHA");
-      return;
-    }
 
     if (formData.password !== formData.confirmPassword) {
       setMessage('Passwords do not match');
@@ -35,8 +23,9 @@ const Register: React.FC = () => {
 
     try {
       const response = await axios.post('http://ec2-13-201-34-207.ap-south-1.compute.amazonaws.com:8081/api/users/register', {
-        ...formData,
-        captchaToken, // optional: send this to backend for verification
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
       });
       setMessage('Registration successful');
       console.log('Registration successful:', response.data);
@@ -45,6 +34,7 @@ const Register: React.FC = () => {
       console.error('There was an error registering:', error);
     }
   };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -59,6 +49,7 @@ const Register: React.FC = () => {
           </Link>
         </p>
       </div>
+
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -76,6 +67,7 @@ const Register: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
@@ -90,6 +82,7 @@ const Register: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
+
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
@@ -104,6 +97,7 @@ const Register: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               />
             </div>
+
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                 Confirm Password
@@ -118,13 +112,8 @@ const Register: React.FC = () => {
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               />
             </div>
-
-            <div>
-              <ReCAPTCHA
-                sitekey="6LfR1NIrAAAAAJozt7vptXOm34ZSI8rcYSyFRVYY" // <-- Replace with your actual site key
-                onChange={handleCaptchaChange}
-              />
-            </div>
+            
+            {/* The ReCAPTCHA component has been removed from here */}
 
             <div>
               <button
