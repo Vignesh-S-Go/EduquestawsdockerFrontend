@@ -1,19 +1,12 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Lock } from 'react-feather';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
-  const handleCaptchaChange = (token: string | null) => {
-    console.log("Captcha token:", token);
-    setCaptchaToken(token);
-  };
 
   // Function to store the token
   const storeToken = (token: string) => {
@@ -24,29 +17,34 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!captchaToken) {
-      setMessage("Please complete the CAPTCHA");
-      return;
-    }
+    // location
+    navigator.geolocation.getCurrentPosition(
+      async () => {
+        try {
+          const response = await axios.post('http://localhost:8081/api/users/login', {
+            ...formData,
+          });
 
-    // The location wrapper has been removed. The API call is now made directly.
-    try {
-      const response = await axios.post('http://ec2-13-201-34-207.ap-south-1.compute.amazonaws.com:8081/api/users/login', {
-        ...formData,
-        captchaToken,
-      });
-
-      if (response.data.token) {
-        storeToken(response.data.token); // Store the token
-        setMessage('Login Successful');
-        navigate('/dash');
-      } else {
-        setMessage('Email or password is incorrect');
+          if (response.data.token) {
+            storeToken(response.data.token);
+            setMessage('Login Successful');
+            navigate('/dash');
+          } else {
+            setMessage('Email or password is incorrect');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          setMessage('Email or password is incorrect');
+        }
+      },
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          alert("Turn on your location or off");
+        } else {
+          console.error("Error accessing location:", error.message);
+        }
       }
-    } catch (error) {
-      console.error('Error:', error);
-      setMessage('Email or password is incorrect');
-    }
+    );
   };
 
   return (
@@ -94,13 +92,6 @@ const Login: React.FC = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
-            </div>
-
-            <div>
-              <ReCAPTCHA
-                sitekey="6LfR1NIrAAAAAJozt7vptXOm34ZSI8rcYSyFRVYY" 
-                onChange={handleCaptchaChange}
               />
             </div>
 
